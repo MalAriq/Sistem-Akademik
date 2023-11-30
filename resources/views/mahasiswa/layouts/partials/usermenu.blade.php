@@ -1,7 +1,7 @@
 <div class="flex items-center">
     <div class="flex items-center ml-3">
       <div>
-        <button type="button" class="flex text-smrounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+        <button type="button" class="flex text-smrounded-full focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
           <span class="sr-only">Open user menu</span>
           <img class="w-8 h-8 rounded-full" src="{{ asset('fotoProfil/'.$mahasiswa->foto) }}" alt="Foto Pengguna">
         </button>

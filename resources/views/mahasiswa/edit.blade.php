@@ -24,17 +24,27 @@
                 <label for="email" class="text-medium text-sm  text-gray-500 dark:text-gray-400">Email</label>
                 <input type="email" name="email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="{{ $mahasiswa->email }}" required>
             </div>
+            <div class="grid md:grid-cols-2 md:gap-6 mt-3">
+                <div>
+                    <label for="password" class="text-medium text-sm text-gray-500 dark:text-gray-400">Password Baru</label>
+                    <input type="password" name="password" placeholder="••••••••" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="">
+                </div>
+                <div>
+                    <label for="password_confirmation" class="text-medium text-sm text-gray-500 dark:text-gray-400">Konfirmasi Password Baru</label>
+                    <input type="password" name="password_confirmation" placeholder="••••••••" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="">
+                </div>
+            </div>
             <div class="mt-3">
                 <label for="nama" class="text-medium text-sm  text-gray-500 dark:text-gray-400">Nama</label>
                 <input type="text" name="nama" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="{{ $mahasiswa->nama }}" required>
             </div>
             <div class="mt-3">
                 <label for="nohp" class="text-medium text-sm  text-gray-500 dark:text-gray-400">Nomor Handphone</label>
-                <input type="text" name="no_HP" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="{{ $mahasiswa->no_HP }}" required>
+                <input type="text" name="no_HP" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="{{ $mahasiswa->no_HP }}" >
             </div>
             <div class="mt-3">
                 <label for="alamat" class="text-medium text-sm  text-gray-500 dark:text-gray-400">Alamat</label>
-                <input type="text" name="alamat" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="{{ $mahasiswa->alamat }}" required>
+                <input type="text" name="alamat" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="{{ $mahasiswa->alamat }}" >
             </div>
             <div class="mt-3">
                 <label for="jalur" class="text-medium text-sm  text-gray-500 dark:text-gray-400">Jalur Masuk</label>
@@ -52,8 +62,20 @@
             </div>
             <div class="grid md:grid-cols-2 md:gap-6 mt-3">
                 <div class="relative z-0 w-full mb-6 group">
+                    <label class="text-medium text-sm text-gray-500 dark:text-gray-400">Provinsi</label>
+                    <select name="kode_prov" id="provinsi" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                        <option value="" disabled>-- Pilih Provinsi --</option>
+                        @foreach ($provinsi as $p)
+                            <option value="{{ $p->kode_prov }}"  {{ $p->kode_prov == $mahasiswa->kode_prov ? 'selected' : '' }}>
+                                {{ $p->nama_prov }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="relative z-0 w-full mb-6 group">
                     <label class="text-medium text-sm text-gray-500 dark:text-gray-400">Kota</label>
-                    <select name="kota" id="kota" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                    <select name="kode_kota_kab" id="kota" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                        <option value="" disabled>-- Pilih Kota/Kabupaten --</option>
                         @foreach ($kota as $k)
                             <option value="{{ $k->kode_kota_kab }}" {{ $k->kode_kota_kab == $mahasiswa->kode_kota_kab ? 'selected' : '' }}>
                                 {{ $k->namakota }}
@@ -61,19 +83,82 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="relative z-0 w-full mb-6 group">
-                    <label class="text-medium text-sm text-gray-500 dark:text-gray-400">Provinsi</label>
-                    <select name="provinsi" id="provinsi" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" disabled>
-                        @foreach ($kota as $k)
-                            <option value="{{ $k->kode_kota_kab }}" {{ $k->kode_kota_kab == $mahasiswa->kode_kota_kab ? 'selected' : '' }}>
-                                {{ $k->namaprov }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+            </div>
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $(document).ready(function() {
+                    $('#provinsi').on('change', function() {
+                        var kodeProvinsi = $(this).val();
+                        var kotaDropdown = $('#kota');
+
+                        if (kodeProvinsi) {
+                            $.ajax({
+                                url: '/getKotaByProvinsi/' + kodeProvinsi,
+                                type: 'GET',
+                                dataType: 'json',
+                                success: function(data) {
+                                    kotaDropdown.empty().append('<option value="" disabled>-- Pilih Kota/Kabupaten --</option>');
+                                    $.each(data, function(key, value) {
+                                        kotaDropdown.append('<option value="' + value.kode_kota_kab + '">' + value.nama_kota_kab + '</option>');
+                                    });
+                                    kotaDropdown.val('{{ $mahasiswa->kode_kota_kab }}'); // Menetapkan nilai terpilih sebelumnya
+                                    kotaDropdown.prop('disabled', false);
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error(xhr.responseText);
+                                }
+                            });
+                        } else {
+                            kotaDropdown.empty().append('<option value="" disabled>-- Pilih Kota/Kabupaten --</option>');
+                            kotaDropdown.prop('disabled', true);
+                        }
+                    }).change(); // Memanggil perubahan saat halaman dimuat untuk menetapkan kembali opsi terpilih
+                });
+            </script>
+
             </div>
             <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update</button>
         </form>
    </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{{-- <script>
+$(document).ready(function() {
+    $('#kota').prop('disabled', true);
+
+    $('#provinsi').on('change', function() {
+        var kode_prov = $(this).val();
+        if (kode_prov) {
+            $.ajax({
+                url: '/getKotaByProvinsi/' + kode_prov,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#kota').empty();
+                    $('#kota').append('<option value="">-- Pilih Kota/Kabupaten --</option>');
+                    if (data && data.length > 0) {
+                        $.each(data, function(key, value) {
+                            $('#kota').append('<option value="' + value.kode_kota_kab + '">' + value.namakota + '</option>');
+                        });
+                        $('#kota').prop('disabled', false);
+                    } else {
+                        $('#kota').prop('disabled', true);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    // Handle errors here
+                }
+            });
+        } else {
+            $('#kota').empty();
+            $('#kota').append('<option value="">-- Pilih Kota/Kabupaten --</option>');
+            $('#kota').prop('disabled', true);
+        }
+    });
+});
+
+</script> --}}
 @endsection

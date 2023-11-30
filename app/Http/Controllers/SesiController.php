@@ -15,7 +15,7 @@ class SesiController extends Controller
 
     function login(Request $request)
     {
-        $mahasiswa = Mahasiswa::where('Mahasiswa.id_mhs', 1)
+        $mahasiswa = Mahasiswa::where('Mahasiswa.id_mhs')
         ->leftJoin('Users', 'Mahasiswa.email', '=', 'Users.email')
         ->select('Mahasiswa.email', 'Users.*')
         ->first();
@@ -43,10 +43,11 @@ class SesiController extends Controller
                 return redirect('dosen/dashboard');
             } elseif(Auth::user()->role == 'departemen'){
                 return redirect('departemen/dashboard');
-            } elseif(Auth::user()->role == 'mahasiswa'){
-                // if(Auth::user()->alamat == ''){
-                //     return redirect()->route('mahasiswa.edit', ['id_mhs' => $mahasiswa->id_mhs]);
-                // }
+            } elseif (Auth::user()->role == 'mahasiswa') {
+                $mahasiswa = Mahasiswa::where('email', $request->email)->first();
+                if ($mahasiswa && ($mahasiswa->alamat == null || $mahasiswa->alamat == "")) {
+                    return redirect()->route('mahasiswa.edit', ['id_mhs' => $mahasiswa->id_mhs]);
+                }
                 return redirect('mahasiswa/dashboard');
             }
         }

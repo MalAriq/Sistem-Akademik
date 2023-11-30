@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Mahasiswa extends Model
 {
@@ -15,7 +16,7 @@ class Mahasiswa extends Model
 
     protected $fillable = [
         'id_mhs',
-        'NIM',
+        'nim',
         'fakultas',
         'nama',
         'email',
@@ -26,8 +27,14 @@ class Mahasiswa extends Model
         'jalur_masuk',
         'foto',
         'kode_kota_kab',
+        'kode_prov',
         'nama_doswal',
         'persetujuan'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'email', 'email');
+    }
 
     public static function rules()
     {
@@ -62,4 +69,54 @@ class Mahasiswa extends Model
         ];
     }
 
+    public function irs()
+    {
+        return $this->hasOne(IRS::class, 'NIM', 'NIM');
+    }
+
+    public function khs()
+    {
+        return $this->hasOne(KHS::class, 'NIM', 'NIM');
+    }
+
+    public function pkl()
+    {
+        return $this->hasOne(PKL::class, 'NIM', 'NIM');
+    }
+
+    public function skripsi()
+    {
+        return $this->hasOne(Skripsi::class, 'NIM', 'NIM');
+    }
+
+    public function getStatusForSemester($semester)
+    {
+        $irs = IRS::where('id_mhs', $this->id_mhs)
+            ->where('smst_aktif', $semester)
+            ->count();
+
+        $khs = KHS::where('id_mhs', $this->id_mhs)
+            ->where('smt_aktif', $semester)
+            ->count();
+
+        // $pkl = PKL::where('id_mhs', $this->id_mhs)
+        //     ->where('semester', $semester)
+        //     ->count();
+
+        // $skripsi = Skripsi::where('id_mhs', $this->id_mhs)
+        //     ->where('semester', $semester)
+        //     ->count();
+
+        if ($irs > 0) {
+            return 'SUDAH IRS';
+        } elseif ($khs > 0) {
+            return 'SUDAH KHS';
+        // } elseif ($pkl > 0) {
+        //     return 'SUDAH PKL';
+        // } elseif ($skripsi > 0) {
+        //     return 'SUDAH Skripsi';
+        } else {
+            return 'BELUM';
+        }
+    }
 }

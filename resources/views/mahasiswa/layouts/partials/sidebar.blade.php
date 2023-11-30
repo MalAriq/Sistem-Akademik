@@ -6,7 +6,7 @@
                <img class="w-12 h-12 rounded-full" src="{{ asset('fotoProfil/'.$mahasiswa->foto) }}" alt="Foto Pengguna">
                <div class="ml-2">
                    <a class="text-xs">{{ $mahasiswa->nama }}</a>
-                   <p class="text-xs font-thin text-gray-500">{{ $mahasiswa->NIM }}</p>
+                   <p class="text-xs font-bold text-gray-900">{{ $mahasiswa->NIM }}</p>
                </div>
            </div>
            </li>
@@ -45,19 +45,28 @@
              </button>
              <ul id="dropdown-example1" class="hidden py-2 space-y-2">
                    <li>
-                      <a href="#" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Entry Data IRS</a>
+                      <a href="{{ route('mahasiswa.irs', ['id_mhs' => $mahasiswa->id_mhs]) }}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Entry Data IRS</a>
                    </li>
                    <li>
-                      <a href="#" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Entry Data KHS</a>
+                      <a href="{{ route('mahasiswa.khs', ['id_mhs' => $mahasiswa->id_mhs]) }}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Entry Data KHS</a>
                    </li>
                    <li>
-                      <a href="#" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Entry Data PKL</a>
+                      <a href="{{ route('mahasiswa.pkl', ['id_mhs' => $mahasiswa->id_mhs]) }}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Entry Data PKL</a>
                    </li>
                    <li>
-                      <a href="#" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Entry Data Skripsi</a>
+                      <a href="{{ route('mahasiswa.skripsi', ['id_mhs' => $mahasiswa->id_mhs]) }}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Entry Data Skripsi</a>
                    </li>
              </ul>
           </li>
+          {{-- <li>
+            <a href="{{ route('mahasiswa.rekap') }}" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" >
+               <svg svg class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
+                 <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z"/>
+                 <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2Z"/>
+               </svg>
+                   <span class="flex-1 ml-3 text-left whitespace-nowrap">Data Akademik</span>
+            </a>
+          </li> --}}
        </ul>
     </div>
 </aside>
