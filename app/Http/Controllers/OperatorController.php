@@ -566,48 +566,84 @@ class OperatorController extends Controller
     {
         $user = auth()->user();
         $nip = Operator::where('email', $user->email)->value('NIP');
-
+    
         $operator = Operator::where('Operator.email', $user->email)
             ->select('Operator.*')
             ->first();
-
-        $statusTidakAktif = ['TIDAK AKTIF', 'CUTI', 'MANGKIR', 'DO', 'UNDUR DIRI', 'LULUS', 'MENINGGAL DUNIA'];
-
+    
+    
         $tahun = DB::table('Mahasiswa')
-        ->select('angkatan')
-        ->distinct()
-        ->orderBy('angkatan', 'asc')
-        ->pluck('angkatan')
-        ->toArray();
-
+            ->select('angkatan')
+            ->distinct()
+            ->orderBy('angkatan', 'asc')
+            ->pluck('angkatan')
+            ->toArray();
+    
         $jumlahAngkatan = count($tahun);
 
         $jumlahMahasiswaAktif = [];
         $jumlahMahasiswaTidakAktif = [];
-
+        $jumlahMahasiswaCuti = [];
+        $jumlahMahasiswaMangkir = [];
+        $jumlahMahasiswaDO = [];
+        $jumlahMahasiswaLulus= [];
+        $jumlahMahasiswaUD = [];
+        $jumlahMahasiswaMD= [];
+        
+    
         foreach ($tahun as $year) {
             $jumlahMahasiswaAktif[$year] = DB::table('Mahasiswa')
-                ->where('Mahasiswa.angkatan', $year)
-                ->where('Mahasiswa.status', 'AKTIF')
-                ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
-                ->count();
+            ->where('Mahasiswa.angkatan', $year)
+            ->where('Mahasiswa.status', 'AKTIF')
+            ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
+            ->count();
 
             $jumlahMahasiswaTidakAktif[$year] = DB::table('Mahasiswa')
                 ->where('Mahasiswa.angkatan', $year)
-                ->whereIn('Mahasiswa.status', $statusTidakAktif)
+                ->where('Mahasiswa.status', 'TIDAK AKTIF')
+                ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
+                ->count();
+
+            $jumlahMahasiswaCuti[$year] = DB::table('Mahasiswa')
+                ->where('Mahasiswa.angkatan', $year)
+                ->where('Mahasiswa.status', 'CUTI')
+                ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
+                ->count();
+            $jumlahMahasiswaMangkir[$year] = DB::table('Mahasiswa')
+                ->where('Mahasiswa.angkatan', $year)
+                ->where('Mahasiswa.status', 'MANGKIR')
+                ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
+                ->count();
+            $jumlahMahasiswaDO[$year] = DB::table('Mahasiswa')
+                ->where('Mahasiswa.angkatan', $year)
+                ->where('Mahasiswa.status', 'DO')
+                ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
+                ->count();
+            $jumlahMahasiswaUD[$year] = DB::table('Mahasiswa')
+                ->where('Mahasiswa.angkatan', $year)
+                ->where('Mahasiswa.status', 'UNDUR DIRI')
+                ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
+                ->count();
+            $jumlahMahasiswaLulus[$year] = DB::table('Mahasiswa')
+                ->where('Mahasiswa.angkatan', $year)
+                ->where('Mahasiswa.status', 'LULUS')
+                ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
+                ->count();
+            $jumlahMahasiswaMD[$year] = DB::table('Mahasiswa')
+                ->where('Mahasiswa.angkatan', $year)
+                ->where('Mahasiswa.status', 'MENINGGAL DUNIA')
                 ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
                 ->count();
         }
-
-        return view('operator.rekapstatus', compact('operator', 'jumlahMahasiswaAktif', 'jumlahMahasiswaTidakAktif', 'tahun', 'jumlahAngkatan'));
+    
+        return view('operator.rekapstatus', compact('operator', 'jumlahMahasiswaAktif', 'jumlahMahasiswaTidakAktif', 'jumlahMahasiswaCuti', 'jumlahMahasiswaMangkir', 'jumlahMahasiswaDO', 'jumlahMahasiswaUD', 'jumlahMahasiswaLulus', 'jumlahMahasiswaMD', 'tahun', 'jumlahAngkatan'));
     }
-
 
     public function dataMhsAktif($tahun)
     {
         $user = auth()->user();
         $nip = Operator::where('email', $user->email)->value('NIP');
-
+    
         $operator = Operator::where('Operator.email', $user->email)
             ->select('Operator.*')
             ->first();
@@ -621,15 +657,15 @@ class OperatorController extends Controller
         ->where('Mahasiswa.status', 'AKTIF')
         ->select('Mahasiswa.*')
         ->get();
-
+    
         return view('operator.mhsaktif', compact('operator', 'aktif', 'tahun', 'doswal'));
     }
 
-    public function dataMhsTdkAktif($tahun)
+    public function dataMhsTdkAktif($tahun, $status)
     {
         $user = auth()->user();
         $nip = Operator::where('email', $user->email)->value('NIP');
-
+    
         $operator = Operator::where('Operator.email', $user->email)
             ->select('Operator.*')
             ->first();
@@ -638,25 +674,24 @@ class OperatorController extends Controller
         ->where('Mahasiswa.angkatan', $tahun)
         ->first();
 
-        $statusTidakAktif = ['TIDAK AKTIF', 'CUTI', 'MANGKIR', 'DO', 'UNDUR DIRI', 'LULUS', 'MENINGGAL DUNIA'];
 
         $tdkAktif = DB::table('Mahasiswa')
         ->where('Mahasiswa.angkatan', $tahun)
-        ->whereIn('Mahasiswa.status', $statusTidakAktif)
+        ->where('Mahasiswa.status', $status)
         ->select('Mahasiswa.*')
         ->get();
-
-        return view('operator.mhstdkaktif', compact('operator', 'tdkAktif', 'tahun', 'doswal'));
+    
+        return view('operator.mhstdkaktif', compact('operator', 'tdkAktif', 'tahun', 'doswal', 'status'));
     }
 
     public function cetakStatus()
-    {
+    {    
         $status = DB::table('Mahasiswa')
             ->select('Mahasiswa.*')
             ->get();
-
+    
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('operator.cetakrekapstatus', ['status' => $status]);
-
+    
         return $pdf->stream('rekap-status.pdf');
     }
 
@@ -671,28 +706,26 @@ class OperatorController extends Controller
             ->where('Mahasiswa.status', 'AKTIF')
             ->select('Mahasiswa.*')
             ->get();
-
+    
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('operator.cetakMhsAktif', ['aktif' => $aktif, 'tahun' => $tahun, 'doswal' => $doswal]);
-
+    
         return $pdf->stream('mahasiswa-aktif-' . $tahun . '.pdf');
     }
-
-    public function cetakMhsTdkAktif($tahun)
+    
+    public function cetakMhsTdkAktif($tahun, $status)
     {
         $doswal = Dosen::join('Mahasiswa', 'Dosen.nama_doswal', '=', 'Mahasiswa.nama_doswal')
         ->where('Mahasiswa.angkatan', $tahun)
         ->first();
 
-        $statusTidakAktif = ['TIDAK AKTIF', 'CUTI', 'MANGKIR', 'DO', 'UNDUR DIRI', 'LULUS', 'MENINGGAL DUNIA'];
-
         $tdkAktif = DB::table('Mahasiswa')
             ->where('Mahasiswa.angkatan', $tahun)
-            ->whereIn('Mahasiswa.status', $statusTidakAktif)
+            ->where('Mahasiswa.status', $status)
             ->select('Mahasiswa.*')
             ->get();
-
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('operator.cetakMhsTdkAktif', ['tdkAktif' => $tdkAktif, 'tahun' => $tahun, 'doswal' => $doswal]);
-
+    
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('operator.cetakMhsTdkAktif', ['tdkAktif' => $tdkAktif, 'tahun' => $tahun, 'doswal' => $doswal, 'status' => $status]);
+    
         return $pdf->stream('mahasiswa-tidak-aktif-' . $tahun . '.pdf');
     }
 

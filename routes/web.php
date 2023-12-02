@@ -78,10 +78,10 @@ Route::middleware(['auth'])->group(function(){
 
         Route::get('/operator/rekap-status', [OperatorController::class, 'rekapStatus'])->name('operator.rekapstatus');
         Route::get('/operator/mahasiswa-aktif/{tahun}', [OperatorController::class, 'dataMhsAktif'])->name('operator.mhsaktif');
-        Route::get('/operator/mahasiswa-tidak-aktif/{tahun}', [OperatorController::class, 'dataMhsTdkAktif'])->name('operator.mhstdkaktif');
+        Route::get('/operator/mahasiswa-tidak-aktif/{tahun}/{status}', [OperatorController::class, 'dataMhsTdkAktif'])->name('operator.mhstdkaktif');
         Route::get('/operator/cetak-rekap-status', [OperatorController::class, 'cetakStatus'])->name('operator.cetakrekapstatus');
         Route::get('/operator/cetak-mahasiswa-aktif/{tahun}', [OperatorController::class, 'cetakMhsAktif'])->name('operator.cetakmhsaktif');
-        Route::get('/operator/cetak-mahasiswa-tidak-aktif/{tahun}', [OperatorController::class, 'cetakMhsTdkAktif'])->name('operator.cetakmhstdkaktif');
+        Route::get('/operator/cetak-mahasiswa-tidak-aktif/{tahun}/{status}', [OperatorController::class, 'cetakMhsTdkAktif'])->name('operator.cetakmhstdkaktif');
     });
 
     // Dosen
@@ -115,10 +115,10 @@ Route::middleware(['auth'])->group(function(){
 
         Route::get('/dosen/rekap-status', [DosenController::class, 'rekapStatus'])->name('dosen.rekapstatus');
         Route::get('/dosen/mahasiswa-aktif/{tahun}', [DosenController::class, 'dataMhsAktif'])->name('dosen.mhsaktif');
-        Route::get('/dosen/mahasiswa-tidak-aktif/{tahun}', [DosenController::class, 'dataMhsTdkAktif'])->name('dosen.mhstdkaktif');
+        Route::get('/dosen/mahasiswa-tidak-aktif/{tahun}/{status}', [DosenController::class, 'dataMhsTdkAktif'])->name('dosen.mhstdkaktif');
         Route::get('/dosen/cetak-rekap-status', [DosenController::class, 'cetakStatus'])->name('dosen.cetakrekapstatus');
         Route::get('/dosen/cetak-mahasiswa-aktif/{tahun}', [DosenController::class, 'cetakMhsAktif'])->name('dosen.cetakmhsaktif');
-        Route::get('/dosen/cetak-mahasiswa-tidak-aktif/{tahun}', [DosenController::class, 'cetakMhsTdkAktif'])->name('dosen.cetakmhstdkaktif');
+        Route::get('/dosen/cetak-mahasiswa-tidak-aktif/{tahun}/{status}', [DosenController::class, 'cetakMhsTdkAktif'])->name('dosen.cetakmhstdkaktif');
     });
 
     // Departemen
@@ -137,10 +137,11 @@ Route::middleware(['auth'])->group(function(){
 
         Route::get('/departemen/rekap-status', [DepartemenController::class, 'rekapStatus'])->name('departemen.rekapstatus');
         Route::get('/departemen/mahasiswa-aktif/{tahun}', [DepartemenController::class, 'dataMhsAktif'])->name('departemen.mhsaktif');
-        Route::get('/departemen/mahasiswa-tidak-aktif/{tahun}', [DepartemenController::class, 'dataMhsTdkAktif'])->name('departemen.mhstdkaktif');
+        //Route::get('/departemen/asiswamah-tidak-aktif/{tahun}', [DepartemenController::class, 'dataMhsTdkAktif'])->name('departemen.mhstdkaktif');
+        Route::get('/departemen/mahasiswa-tidak-aktif/{tahun}/{status}', [DepartemenController::class, 'dataMhsTdkAktif'])->name('departemen.mhstdkaktif');
         Route::get('/departemen/cetak-rekap-status', [DepartemenController::class, 'cetakStatus'])->name('departemen.cetakrekapstatus');
         Route::get('/departemen/cetak-mahasiswa-aktif/{tahun}', [DepartemenController::class, 'cetakMhsAktif'])->name('departemen.cetakmhsaktif');
-        Route::get('/departemen/cetak-mahasiswa-tidak-aktif/{tahun}', [DepartemenController::class, 'cetakMhsTdkAktif'])->name('departemen.cetakmhstdkaktif');
+        Route::get('/departemen/cetak-mahasiswa-tidak-aktif/{tahun}/{status}', [DepartemenController::class, 'cetakMhsTdkAktif'])->name('departemen.cetakmhstdkaktif');
         // Route::get('/departemen/skripsi', [DepartemenController::class, 'dataskripsi'])->name('departemen.skripsi');
         // Route::get('/departemen/rekap-irs', [DepartemenController::class, 'rekapirs'])->name('departemen.rekapirs');
 
