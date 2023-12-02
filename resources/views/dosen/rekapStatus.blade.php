@@ -25,23 +25,74 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="text-center text-lg">
-                            @for($i = 0; $i < $jumlahAngkatan; $i++)
-                                <td class="py-2 font-medium">ㅤㅤAktifㅤㅤ</td>
-                                <td class="py-2 font-medium">Tidak Aktif</td>
-                            @endfor
-                        </tr>
-                        <tr class="text-center text-lg">
+                        <tr class="text-center">
+                            <td class="py-2 font-medium">Aktif</td>
                             @foreach ($tahun as $year)
                                 <td class="py-2 text-blue-500 font-medium text-base text-center">
                                     <a href="{{ route('dosen.mhsaktif', ['tahun' => $year]) }}">
                                         {{ $jumlahMahasiswaAktif[$year] }}
                                     </a>
                                 </td>
-                                <td class="py-2 text-blue-500 font-medium text-base text-center">
-                                    <a href="{{ route('dosen.mhstdkaktif', ['tahun' => $year]) }}">
-                                        {{ $jumlahMahasiswaTidakAktif[$year] }}
-                                    </a></td>
+                            @endforeach
+                        </tr>
+                        <tr class="text-center">
+                            <td class="py-2 font-medium">Cuti</td>
+                            @foreach ($tahun as $year)
+                                <td class="py-2 text-blue-500 font-medium text-base text-center">                                    
+                                    <a href="{{ route('dosen.mhstdkaktif', ['tahun' => $year, 'status' => 'CUTI']) }}">
+                                        {{ $jumlahMahasiswaCuti[$year] }}
+                                    </a>
+                                </td>
+                            @endforeach
+                        </tr>
+                        <tr class="text-center">
+                            <td class="py-2 font-medium">Mangkir</td>
+                            @foreach ($tahun as $year)
+                                <td class="py-2 text-blue-500 font-medium text-base text-center">                                    
+                                    <a href="{{ route('dosen.mhstdkaktif', ['tahun' => $year, 'status' => 'MANGKIR']) }}">
+                                        {{ $jumlahMahasiswaMangkir[$year] }}
+                                    </a>
+                                </td>
+                            @endforeach
+                        </tr>
+                        <tr class="text-center">
+                            <td class="py-2 font-medium">DO</td>
+                            @foreach ($tahun as $year)
+                                <td class="py-2 text-blue-500 font-medium text-base text-center">                                    
+                                    <a href="{{ route('dosen.mhstdkaktif', ['tahun' => $year, 'status' => 'DO']) }}">
+                                        {{ $jumlahMahasiswaDO[$year] }}
+                                    </a>
+                                </td>
+                            @endforeach
+                        </tr>
+                        <tr class="text-center">
+                            <td class="py-2 font-medium">Undur Diri</td>
+                            @foreach ($tahun as $year)
+                                <td class="py-2 text-blue-500 font-medium text-base text-center">                                    
+                                    <a href="{{ route('dosen.mhstdkaktif', ['tahun' => $year, 'status' => 'UNDUR DIRI']) }}">
+                                        {{ $jumlahMahasiswaUD[$year] }}
+                                    </a>
+                                </td>
+                            @endforeach
+                        </tr>
+                        <tr class="text-center">
+                            <td class="py-2 font-medium">Lulus</td>
+                            @foreach ($tahun as $year)
+                                <td class="py-2 text-blue-500 font-medium text-base text-center">                                    
+                                    <a href="{{ route('dosen.mhstdkaktif', ['tahun' => $year, 'status' => 'LULUS']) }}">
+                                        {{ $jumlahMahasiswaLulus[$year] }}
+                                    </a>
+                                </td>
+                            @endforeach
+                        </tr>
+                        <tr class="text-center">
+                            <td class="py-2 font-medium">Meninggal Dunia</td>
+                            @foreach ($tahun as $year)
+                                <td class="py-2 text-blue-500 font-medium text-base text-center">                                    
+                                    <a href="{{ route('dosen.mhstdkaktif', ['tahun' => $year, 'status' => 'MENINGGAL DUNIA']) }}">
+                                        {{ $jumlahMahasiswaMD[$year] }}
+                                    </a>
+                                </td>
                             @endforeach
                         </tr>
                     </tbody>

@@ -5,10 +5,10 @@
     <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
        <div class="grid grid-cols-1 gap-4 mb-4">
          <div class="flex items-center justify-center h-20 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-           <p class="text-3xl font-bold text-gray-900 dark:text-white">Data Mahasiswa Tidak Aktif Angkatan {{$tahun}}</p>
+           <p class="text-3xl font-bold text-gray-900 dark:text-white">Data Mahasiswa {{$status}} Angkatan {{$tahun}}</p>
         </div>
         <div>
-            <a href="{{ route('dosen.cetakmhstdkaktif', ['tahun' => $tahun]) }}" class="text-white bg-blue-500 hover:bg-blue-600 font-medium text-base text-center py-2 px-4 rounded-full" target="_blank">Cetak Mahasiswa Tidak Aktif</a>
+            <a href="{{ route('dosen.cetakmhstdkaktif', ['tahun' => $tahun, 'status'=>$status]) }}" class="text-white bg-blue-500 hover:bg-blue-600 font-medium text-base text-center py-2 px-4 rounded-full" target="_blank">Cetak FIle</a>
             <table class="mt-3" style="width: 60%;">
                 <tr>
                     <td style="border: none;">Nama Dosen Wali</td>

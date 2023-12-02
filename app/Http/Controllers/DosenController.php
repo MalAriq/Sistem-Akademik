@@ -879,263 +879,313 @@ class DosenController extends Controller
     }
 
      // Skripsi
-     public function rekapskripsi()
-     {
-     $user = auth()->user();
-     $nip = Dosen::where('email', $user->email)->value('NIP');
-
-     $doswal = Dosen::where('Dosen.email', $user->email)
-     ->select('Dosen.*')
-     ->first();
-
-     $tahun = DB::table('Mahasiswa')
-     ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-     ->where('Dosen.NIP', $nip)
-     ->select('angkatan')
-     ->distinct()
-     ->pluck('angkatan')
-     ->toArray();
-
-     $jumlahAngkatan = count($tahun);
-
-     $jumlahMahasiswaSkripsi = [];
-     $jumlahMahasiswaBlmSkripsi = [];
-
-     foreach ($tahun as $year) {
-         $jumlahMahasiswaSkripsi[$year] = Skripsi::join('Mahasiswa', 'Skripsi.id_mhs', '=', 'Mahasiswa.id_mhs')
-         ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-         ->where('Dosen.NIP', $nip)
-         ->where('Mahasiswa.angkatan', $year)
-         ->where('Skripsi.status_skripsi', 'Sudah Skripsi')
-         ->where('Skripsi.persetujuan', 'Disetujui')
-         ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
-         ->count();
-
-         $jumlahMahasiswaBlmSkripsi[$year] = DB::table('Mahasiswa')
-         ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-         ->leftJoin('Skripsi', 'Mahasiswa.id_mhs', '=', 'Skripsi.id_mhs')
-         ->where('Dosen.NIP', $nip)
-         ->where('Skripsi.status_skripsi', 'Belum Skripsi')
-         ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
-         ->where('Mahasiswa.angkatan', $year)
-         ->count();
-     }
-
-     return view('dosen.rekapSkripsi', compact('doswal', 'jumlahMahasiswaSkripsi', 'jumlahMahasiswaBlmSkripsi', 'tahun', 'jumlahAngkatan'));
-     }
-
-     public function dataSudahSkripsi($tahun)
-     {
-         $user = auth()->user();
-         $nip = Dosen::where('email', $user->email)->value('NIP');
-
-         $doswal = Dosen::where('Dosen.email', $user->email)
-         ->select('Dosen.*')
-         ->first();
-
-         $skripsi = Skripsi::join('Mahasiswa', 'Skripsi.id_mhs', '=', 'Mahasiswa.id_mhs')
-         ->where('Mahasiswa.angkatan', $tahun)
-         ->where('Skripsi.status_skripsi', 'Sudah Skripsi')
-         ->where('Skripsi.persetujuan', 'Disetujui')
-         ->select('Skripsi.*', 'mahasiswa.NIM as NIM', 'mahasiswa.nama as nama', 'mahasiswa.angkatan as angkatan')
-         ->get();
-
-         return view('dosen.sudahSkripsi', compact('doswal', 'skripsi', 'tahun', 'doswal'));
-     }
-
-     public function dataBlmSkripsi($tahun)
-     {
-         $user = auth()->user();
-         $nip = Dosen::where('email', $user->email)->value('NIP');
-
-         $doswal = Dosen::where('Dosen.email', $user->email)
-         ->select('Dosen.*')
-         ->first();
-
-         $skripsi = Skripsi::join('Mahasiswa', 'Skripsi.id_mhs', '=', 'Mahasiswa.id_mhs')
-         ->where('Mahasiswa.angkatan', $tahun)
-         ->where('Skripsi.status_skripsi', 'Belum Skripsi')
-         ->select('Skripsi.*', 'mahasiswa.NIM as NIM', 'mahasiswa.nama as nama', 'mahasiswa.angkatan as angkatan')
-         ->get();
-
-         return view('dosen.belumSkripsi', compact('doswal', 'skripsi', 'tahun', 'doswal'));
-     }
-
-     public function cetakSkripsi()
-     {
+    public function rekapskripsi()
+    {
         $user = auth()->user();
         $nip = Dosen::where('email', $user->email)->value('NIP');
 
-        $doswal = Dosen::where('email', $user->email)
-            ->select('Dosen.*')
-            ->first();
+        $doswal = Dosen::where('Dosen.email', $user->email)
+        ->select('Dosen.*')
+        ->first();
 
-         $skripsi = Skripsi::join('Mahasiswa', 'Skripsi.id_mhs', '=', 'Mahasiswa.id_mhs')
+        $tahun = DB::table('Mahasiswa')
+        ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
+        ->where('Dosen.NIP', $nip)
+        ->select('angkatan')
+        ->distinct()
+        ->pluck('angkatan')
+        ->toArray();
+
+        $jumlahAngkatan = count($tahun);
+
+        $jumlahMahasiswaSkripsi = [];
+        $jumlahMahasiswaBlmSkripsi = [];
+
+        foreach ($tahun as $year) {
+            $jumlahMahasiswaSkripsi[$year] = Skripsi::join('Mahasiswa', 'Skripsi.id_mhs', '=', 'Mahasiswa.id_mhs')
             ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
             ->where('Dosen.NIP', $nip)
-            ->select('Skripsi.*', 'mahasiswa.NIM as NIM', 'mahasiswa.nama as nama', 'mahasiswa.angkatan as angkatan')
-            ->get();
-
-         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('dosen.cetakrekapskripsi', ['doswal' => $doswal,'skripsi' => $skripsi]);
-
-         return $pdf->stream('rekap-skripsi.pdf');
-     }
-
-     public function cetakSudahSkripsi($tahun)
-     {
-        $user = auth()->user();
-        $nip = Dosen::where('email', $user->email)->value('NIP');
-
-        $doswal = Dosen::where('email', $user->email)
-            ->select('Dosen.*')
-            ->first();
-
-         $skripsi = Skripsi::join('Mahasiswa', 'Skripsi.id_mhs', '=', 'Mahasiswa.id_mhs')
-            ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-            ->where('Dosen.NIP', $nip )
-            ->where('Mahasiswa.angkatan', $tahun)
+            ->where('Mahasiswa.angkatan', $year)
             ->where('Skripsi.status_skripsi', 'Sudah Skripsi')
             ->where('Skripsi.persetujuan', 'Disetujui')
-            ->select('Skripsi.*', 'mahasiswa.NIM as NIM', 'mahasiswa.nama as nama', 'mahasiswa.angkatan as angkatan')
-            ->get();
+            ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
+            ->count();
 
-         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('dosen.cetaksudahskripsi', ['skripsi' => $skripsi, 'tahun' => $tahun, 'doswal' => $doswal]);
-
-         return $pdf->stream('sudah-skripsi' . $tahun . '.pdf');
-     }
-
-     public function cetakBelumSkripsi($tahun)
-     {
-        $user = auth()->user();
-        $nip = Dosen::where('email', $user->email)->value('NIP');
-
-        $doswal = Dosen::where('email', $user->email)
-            ->select('Dosen.*')
-            ->first();
-
-
-         $skripsi = Skripsi::join('Mahasiswa', 'Skripsi.id_mhs', '=', 'Mahasiswa.id_mhs')
+            $jumlahMahasiswaBlmSkripsi[$year] = DB::table('Mahasiswa')
             ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
+            ->leftJoin('Skripsi', 'Mahasiswa.id_mhs', '=', 'Skripsi.id_mhs')
             ->where('Dosen.NIP', $nip)
-            ->where('Mahasiswa.angkatan', $tahun)
             ->where('Skripsi.status_skripsi', 'Belum Skripsi')
-            ->select('Skripsi.*', 'mahasiswa.NIM as NIM', 'mahasiswa.nama as nama', 'mahasiswa.angkatan as angkatan')
-            ->get();
+            ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
+            ->where('Mahasiswa.angkatan', $year)
+            ->count();
+        }
 
-         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('dosen.cetakbelumskripsi', ['skripsi' => $skripsi, 'tahun' => $tahun, 'doswal' => $doswal]);
+        return view('dosen.rekapSkripsi', compact('doswal', 'jumlahMahasiswaSkripsi', 'jumlahMahasiswaBlmSkripsi', 'tahun', 'jumlahAngkatan'));
+    }
 
-         return $pdf->stream('belum-skripsi' . $tahun . '.pdf');
-     }
-
-     public function rekapStatus()
-     {
-         $user = auth()->user();
-         $nip = Dosen::where('email', $user->email)->value('NIP');
-
-         $doswal = Dosen::where('Dosen.email', $user->email)
-             ->select('Dosen.*')
-             ->first();
-
-         $statusTidakAktif = ['TIDAK AKTIF', 'CUTI', 'MANGKIR', 'DO', 'UNDUR DIRI', 'LULUS', 'MENINGGAL DUNIA'];
-
-         $tahun = DB::table('Mahasiswa')
-         ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-         ->where('Dosen.NIP', $nip)
-         ->select('angkatan')
-         ->distinct()
-         ->pluck('angkatan')
-         ->toArray();
-
-         $jumlahAngkatan = count($tahun);
-
-         $jumlahMahasiswaAktif = [];
-         $jumlahMahasiswaTidakAktif = [];
-
-         foreach ($tahun as $year) {
-             $jumlahMahasiswaAktif[$year] = DB::table('Mahasiswa')
-                ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-                ->where('Dosen.NIP', $nip)
-                ->where('Mahasiswa.angkatan', $year)
-                ->where('Mahasiswa.status', 'AKTIF')
-                ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
-                ->count();
-
-             $jumlahMahasiswaTidakAktif[$year] = DB::table('Mahasiswa')
-                ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-                ->where('Dosen.NIP', $nip)
-                ->where('Mahasiswa.angkatan', $year)
-                ->whereIn('Mahasiswa.status', $statusTidakAktif)
-                ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
-                ->count();
-         }
-
-         return view('dosen.rekapstatus', compact('doswal', 'jumlahMahasiswaAktif', 'jumlahMahasiswaTidakAktif', 'tahun', 'jumlahAngkatan'));
-     }
-
-     public function dataMhsAktif($tahun)
-     {
-         $user = auth()->user();
-         $nip = Dosen::where('email', $user->email)->value('NIP');
-
-         $doswal = Dosen::where('Dosen.email', $user->email)
-         ->select('Dosen.*')
-         ->first();
-
-         $aktif = DB::table('Mahasiswa')
-         ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-         ->where('Dosen.NIP', $nip)
-         ->where('Mahasiswa.angkatan', $tahun)
-         ->where('Mahasiswa.status', 'AKTIF')
-         ->select('Mahasiswa.*')
-         ->get();
-
-         return view('dosen.mhsaktif', compact('doswal', 'aktif', 'tahun', 'doswal'));
-     }
-
-     public function dataMhsTdkAktif($tahun)
-     {
-         $user = auth()->user();
-         $nip = Dosen::where('email', $user->email)->value('NIP');
-
-         $doswal = Dosen::where('Dosen.email', $user->email)
-         ->select('Dosen.*')
-         ->first();
-
-         $statusTidakAktif = ['TIDAK AKTIF', 'CUTI', 'MANGKIR', 'DO', 'UNDUR DIRI', 'LULUS', 'MENINGGAL DUNIA'];
-
-         $tdkAktif = DB::table('Mahasiswa')
-         ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-         ->where('Dosen.NIP', $nip)
-         ->where('Mahasiswa.angkatan', $tahun)
-         ->whereIn('Mahasiswa.status', $statusTidakAktif)
-         ->select('Mahasiswa.*')
-         ->get();
-
-         return view('dosen.mhstdkaktif', compact('doswal', 'tdkAktif', 'tahun', 'doswal'));
-     }
-
-     public function cetakStatus()
-     {
+    public function dataSudahSkripsi($tahun)
+    {
         $user = auth()->user();
         $nip = Dosen::where('email', $user->email)->value('NIP');
 
-        $doswal = Dosen::where('email', $user->email)
+        $doswal = Dosen::where('Dosen.email', $user->email)
+        ->select('Dosen.*')
+        ->first();
+
+        $skripsi = Skripsi::join('Mahasiswa', 'Skripsi.id_mhs', '=', 'Mahasiswa.id_mhs')
+        ->where('Mahasiswa.angkatan', $tahun)
+        ->where('Skripsi.status_skripsi', 'Sudah Skripsi')
+        ->where('Skripsi.persetujuan', 'Disetujui')
+        ->select('Skripsi.*', 'mahasiswa.NIM as NIM', 'mahasiswa.nama as nama', 'mahasiswa.angkatan as angkatan')
+        ->get();
+
+        return view('dosen.sudahSkripsi', compact('doswal', 'skripsi', 'tahun', 'doswal'));
+    }
+
+    public function dataBlmSkripsi($tahun)
+    {
+        $user = auth()->user();
+        $nip = Dosen::where('email', $user->email)->value('NIP');
+
+        $doswal = Dosen::where('Dosen.email', $user->email)
+        ->select('Dosen.*')
+        ->first();
+
+        $skripsi = Skripsi::join('Mahasiswa', 'Skripsi.id_mhs', '=', 'Mahasiswa.id_mhs')
+        ->where('Mahasiswa.angkatan', $tahun)
+        ->where('Skripsi.status_skripsi', 'Belum Skripsi')
+        ->select('Skripsi.*', 'mahasiswa.NIM as NIM', 'mahasiswa.nama as nama', 'mahasiswa.angkatan as angkatan')
+        ->get();
+
+        return view('dosen.belumSkripsi', compact('doswal', 'skripsi', 'tahun', 'doswal'));
+    }
+
+    public function cetakSkripsi()
+    {
+    $user = auth()->user();
+    $nip = Dosen::where('email', $user->email)->value('NIP');
+
+    $doswal = Dosen::where('email', $user->email)
+        ->select('Dosen.*')
+        ->first();
+
+        $skripsi = Skripsi::join('Mahasiswa', 'Skripsi.id_mhs', '=', 'Mahasiswa.id_mhs')
+        ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
+        ->where('Dosen.NIP', $nip)
+        ->select('Skripsi.*', 'mahasiswa.NIM as NIM', 'mahasiswa.nama as nama', 'mahasiswa.angkatan as angkatan')
+        ->get();
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('dosen.cetakrekapskripsi', ['doswal' => $doswal,'skripsi' => $skripsi]);
+
+        return $pdf->stream('rekap-skripsi.pdf');
+    }
+
+    public function cetakSudahSkripsi($tahun)
+    {
+    $user = auth()->user();
+    $nip = Dosen::where('email', $user->email)->value('NIP');
+
+    $doswal = Dosen::where('email', $user->email)
+        ->select('Dosen.*')
+        ->first();
+
+        $skripsi = Skripsi::join('Mahasiswa', 'Skripsi.id_mhs', '=', 'Mahasiswa.id_mhs')
+        ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
+        ->where('Dosen.NIP', $nip )
+        ->where('Mahasiswa.angkatan', $tahun)
+        ->where('Skripsi.status_skripsi', 'Sudah Skripsi')
+        ->where('Skripsi.persetujuan', 'Disetujui')
+        ->select('Skripsi.*', 'mahasiswa.NIM as NIM', 'mahasiswa.nama as nama', 'mahasiswa.angkatan as angkatan')
+        ->get();
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('dosen.cetaksudahskripsi', ['skripsi' => $skripsi, 'tahun' => $tahun, 'doswal' => $doswal]);
+
+        return $pdf->stream('sudah-skripsi' . $tahun . '.pdf');
+    }
+
+    public function cetakBelumSkripsi($tahun)
+    {
+    $user = auth()->user();
+    $nip = Dosen::where('email', $user->email)->value('NIP');
+
+    $doswal = Dosen::where('email', $user->email)
+        ->select('Dosen.*')
+        ->first();
+
+
+        $skripsi = Skripsi::join('Mahasiswa', 'Skripsi.id_mhs', '=', 'Mahasiswa.id_mhs')
+        ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
+        ->where('Dosen.NIP', $nip)
+        ->where('Mahasiswa.angkatan', $tahun)
+        ->where('Skripsi.status_skripsi', 'Belum Skripsi')
+        ->select('Skripsi.*', 'mahasiswa.NIM as NIM', 'mahasiswa.nama as nama', 'mahasiswa.angkatan as angkatan')
+        ->get();
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('dosen.cetakbelumskripsi', ['skripsi' => $skripsi, 'tahun' => $tahun, 'doswal' => $doswal]);
+
+        return $pdf->stream('belum-skripsi' . $tahun . '.pdf');
+    }
+
+    public function rekapStatus()
+    {
+        $user = auth()->user();
+        $nip = Dosen::where('email', $user->email)->value('NIP');
+
+        $doswal = Dosen::where('Dosen.email', $user->email)
             ->select('Dosen.*')
             ->first();
 
-        $status = DB::table('Mahasiswa')
+        $statusTidakAktif = ['TIDAK AKTIF', 'CUTI', 'MANGKIR', 'DO', 'UNDUR DIRI', 'LULUS', 'MENINGGAL DUNIA'];
+
+        $tahun = DB::table('Mahasiswa')
+        ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
+        ->where('Dosen.NIP', $nip) 
+        ->select('angkatan')
+        ->distinct()
+        ->pluck('angkatan')
+        ->toArray();
+
+        $jumlahAngkatan = count($tahun);
+
+        $jumlahMahasiswaAktif = [];
+        $jumlahMahasiswaTidakAktif = [];
+        $jumlahMahasiswaCuti = [];
+        $jumlahMahasiswaMangkir = [];
+        $jumlahMahasiswaDO = [];
+        $jumlahMahasiswaLulus= [];
+        $jumlahMahasiswaUD = [];
+        $jumlahMahasiswaMD= [];
+
+
+        foreach ($tahun as $year) {
+            $jumlahMahasiswaAktif[$year] = DB::table('Mahasiswa')
             ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-            ->where('Dosen.NIP', $nip)
-            ->select('Mahasiswa.*')
-            ->get();
+            ->where('Dosen.NIP', $nip) 
+            ->where('Mahasiswa.angkatan', $year)
+            ->where('Mahasiswa.status', 'AKTIF')
+            ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
+            ->count();
 
-         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('dosen.cetakrekapstatus', ['doswal' => $doswal, 'status' => $status]);
+            //  $jumlahMahasiswaTidakAktif[$year] = DB::table('Mahasiswa')
+            //     ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
+            //     ->where('Dosen.NIP', $nip) 
+            //      ->where('Mahasiswa.angkatan', $year)
+            //      ->where('Mahasiswa.status', 'TIDAK AKTIF')
+            //      ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
+            //      ->count();
 
-         return $pdf->stream('rekap-status.pdf');
-     }
+            $jumlahMahasiswaCuti[$year] = DB::table('Mahasiswa')
+                ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
+                ->where('Dosen.NIP', $nip) 
+                ->where('Mahasiswa.angkatan', $year)
+                ->where('Mahasiswa.status', 'CUTI')
+                ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
+                ->count();
+            $jumlahMahasiswaMangkir[$year] = DB::table('Mahasiswa')
+                ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
+                ->where('Dosen.NIP', $nip) 
+                ->where('Mahasiswa.angkatan', $year)
+                ->where('Mahasiswa.status', 'MANGKIR')
+                ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
+                ->count();
+            $jumlahMahasiswaDO[$year] = DB::table('Mahasiswa')
+                ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
+                ->where('Dosen.NIP', $nip) 
+                ->where('Mahasiswa.angkatan', $year)
+                ->where('Mahasiswa.status', 'DO')
+                ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
+                ->count();
+            $jumlahMahasiswaUD[$year] = DB::table('Mahasiswa')
+                ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
+                ->where('Dosen.NIP', $nip) 
+                ->where('Mahasiswa.angkatan', $year)
+                ->where('Mahasiswa.status', 'UNDUR DIRI')
+                ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
+                ->count();
+            $jumlahMahasiswaLulus[$year] = DB::table('Mahasiswa')
+                ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
+                ->where('Dosen.NIP', $nip) 
+                ->where('Mahasiswa.angkatan', $year)
+                ->where('Mahasiswa.status', 'LULUS')
+                ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
+                ->count();
+            $jumlahMahasiswaMD[$year] = DB::table('Mahasiswa')
+                ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
+                ->where('Dosen.NIP', $nip) 
+                ->where('Mahasiswa.angkatan', $year)
+                ->where('Mahasiswa.status', 'MENINGGAL DUNIA')
+                ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
+                ->count();
 
-     public function cetakMhsAktif($tahun)
-     {
+        return view('dosen.rekapstatus', compact('doswal', 'jumlahMahasiswaAktif', 'jumlahMahasiswaTidakAktif', 'jumlahMahasiswaCuti', 'jumlahMahasiswaMangkir', 'jumlahMahasiswaDO', 'jumlahMahasiswaUD', 'jumlahMahasiswaLulus', 'jumlahMahasiswaMD', 'tahun', 'jumlahAngkatan'));
+        }
+    }
+
+    public function dataMhsAktif($tahun)
+    {
+        $user = auth()->user();
+        $nip = Dosen::where('email', $user->email)->value('NIP');
+
+        $doswal = Dosen::where('Dosen.email', $user->email)
+        ->select('Dosen.*')
+        ->first();
+
+        $aktif = DB::table('Mahasiswa')
+        ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
+        ->where('Dosen.NIP', $nip)
+        ->where('Mahasiswa.angkatan', $tahun)
+        ->where('Mahasiswa.status', 'AKTIF')
+        ->select('Mahasiswa.*')
+        ->get();
+
+        return view('dosen.mhsaktif', compact('doswal', 'aktif', 'tahun', 'doswal'));
+    }
+
+    public function dataMhsTdkAktif($tahun)
+    {
+        $user = auth()->user();
+        $nip = Dosen::where('email', $user->email)->value('NIP');
+
+        $doswal = Dosen::where('Dosen.email', $user->email)
+        ->select('Dosen.*')
+        ->first();
+
+        $statusTidakAktif = ['TIDAK AKTIF', 'CUTI', 'MANGKIR', 'DO', 'UNDUR DIRI', 'LULUS', 'MENINGGAL DUNIA'];
+
+        $tdkAktif = DB::table('Mahasiswa')
+        ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
+        ->where('Dosen.NIP', $nip)
+        ->where('Mahasiswa.angkatan', $tahun)
+        ->whereIn('Mahasiswa.status', $statusTidakAktif)
+        ->select('Mahasiswa.*')
+        ->get();
+
+        return view('dosen.mhstdkaktif', compact('doswal', 'tdkAktif', 'tahun', 'doswal'));
+    }
+
+    public function cetakStatus()
+    {
+    $user = auth()->user();
+    $nip = Dosen::where('email', $user->email)->value('NIP');
+
+    $doswal = Dosen::where('email', $user->email)
+        ->select('Dosen.*')
+        ->first();
+
+    $status = DB::table('Mahasiswa')
+        ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
+        ->where('Dosen.NIP', $nip)
+        ->select('Mahasiswa.*')
+        ->get();
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('dosen.cetakrekapstatus', ['doswal' => $doswal, 'status' => $status]);
+
+        return $pdf->stream('rekap-status.pdf');
+    }
+
+    public function cetakMhsAktif($tahun)
+    {
         $user = auth()->user();
         $nip = Dosen::where('email', $user->email)->value('NIP');
 
@@ -1154,10 +1204,10 @@ class DosenController extends Controller
          $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('dosen.cetakMhsAktif', ['aktif' => $aktif, 'tahun' => $tahun, 'doswal' => $doswal]);
 
          return $pdf->stream('mahasiswa-aktif-' . $tahun . '.pdf');
-     }
+    }
 
-     public function cetakMhsTdkAktif($tahun)
-     {
+    public function cetakMhsTdkAktif($tahun)
+    {
         $user = auth()->user();
         $nip = Dosen::where('email', $user->email)->value('NIP');
 
