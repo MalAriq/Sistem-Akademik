@@ -49,6 +49,7 @@ class DosenController extends Controller
                 ->groupBy('id_mhs');
         })
         ->count();
+    
 
         // Jumlah Mahasiswa dengan IRS Belum Terisi
         $jumlahMahasiswaBlmIRS = DB::table('Mahasiswa')
@@ -74,18 +75,17 @@ class DosenController extends Controller
 
         // Jumlah Mahasiswa dengan KHS Terisi
         $jumlahMahasiswaKHS = DB::table('Mahasiswa')
-            ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-            ->leftJoin('IRS', 'Mahasiswa.id_mhs', '=', 'IRS.id_mhs')
-            ->leftJoin('KHS', 'Mahasiswa.id_mhs', '=', 'KHS.id_mhs')
-            ->where('Dosen.NIP', $nip)
-            ->where('KHS.status_khs', 'Terisi')
-            ->whereBetween('KHS.smt_aktif', [1, 14])
-            ->whereIn('IRS.id_irs', function ($query) {
-                $query->select(DB::raw('MAX(id_irs) as id_irs'))
-                    ->from('IRS')
-                    ->groupBy('id_mhs');
-            })
-            ->count();
+        ->leftJoin('Dosen', 'mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
+        ->leftJoin('KHS', 'mahasiswa.id_mhs', '=', 'KHS.id_mhs')
+        ->where('Dosen.NIP', $nip)
+        ->where('KHS.status_khs', 'Terisi')
+        ->whereBetween('KHS.smt_aktif', [1, 14])
+        ->whereIn('KHS.id_khs', function ($query) {
+            $query->select(DB::raw('MAX(id_khs) as id_khs'))
+                ->from('KHS')
+                ->groupBy('id_mhs');
+        })
+        ->count();
 
         // Jumlah Mahasiswa dengan KHS Belum Terisi
         $jumlahMahasiswaBlmKHS = DB::table('Mahasiswa')
@@ -116,7 +116,7 @@ class DosenController extends Controller
         ->leftJoin('PKL', 'Mahasiswa.id_mhs', '=', 'PKL.id_mhs')
         ->where('Dosen.NIP', $nip)
         ->where('PKL.status_pkl', 'Sudah PKL')
-        ->whereBetween('IRS.smst_aktif', [1, 14])
+        // ->whereBetween('IRS.smst_aktif', [1, 14])
         ->count();
 
         $jumlahMahasiswaBlmPKL = DB::table('Mahasiswa')
@@ -142,12 +142,12 @@ class DosenController extends Controller
         ->leftJoin('Skripsi', 'Mahasiswa.id_mhs', '=', 'Skripsi.id_mhs')
         ->where('Dosen.NIP', $nip)
         ->where('Skripsi.status_skripsi', 'Sudah Skripsi')
-        ->whereBetween('IRS.smst_aktif', [1, 14])
-        ->whereIn('IRS.id_irs', function ($query) {
-            $query->select(DB::raw('MAX(id_irs) as id_irs'))
-                ->from('IRS')
-                ->groupBy('id_mhs');
-        })
+        // ->whereBetween('IRS.smst_aktif', [1, 14])
+        // ->whereIn('IRS.id_irs', function ($query) {
+        //     $query->select(DB::raw('MAX(id_irs) as id_irs'))
+        //         ->from('IRS')
+        //         ->groupBy('id_mhs');
+        // })
         ->count();
 
         $jumlahMahasiswaBlmSkripsi =DB::table('Mahasiswa')
@@ -170,14 +170,14 @@ class DosenController extends Controller
         // Jumlah Mahasiswa Aktif
         $jumlahMahasiswaAktif = DB::table('Mahasiswa')
         ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-        ->leftJoin('IRS', 'Mahasiswa.id_mhs', '=', 'IRS.id_mhs')
+        // ->leftJoin('IRS', 'Mahasiswa.id_mhs', '=', 'IRS.id_mhs')
         ->where('Dosen.NIP', $nip)
         ->where('Mahasiswa.status', 'AKTIF')
-        ->whereIn('IRS.id_irs', function ($query) {
-            $query->select(DB::raw('MAX(id_irs) as id_irs'))
-                ->from('IRS')
-                ->groupBy('id_mhs');
-        })
+        // ->whereIn('IRS.id_irs', function ($query) {
+        //     $query->select(DB::raw('MAX(id_irs) as id_irs'))
+        //         ->from('IRS')
+        //         ->groupBy('id_mhs');
+        // })
         ->count();
 
 
@@ -188,15 +188,15 @@ class DosenController extends Controller
         // Jumlah Mahasiswa Tidak Aktif
         $jumlahMahasiswaTidakAktif = DB::table('Mahasiswa')
             ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-            ->leftJoin('IRS', 'Mahasiswa.id_mhs', '=', 'IRS.id_mhs')
+            // ->leftJoin('IRS', 'Mahasiswa.id_mhs', '=', 'IRS.id_mhs')
             ->where('Dosen.NIP', $nip)
             ->whereIn('Mahasiswa.status', $statusTidakAktif)
-            ->whereBetween('IRS.smst_aktif', [1, 14])
-            ->whereIn('IRS.id_irs', function ($query) {
-                $query->select(DB::raw('MAX(id_irs) as id_irs'))
-                    ->from('IRS')
-                    ->groupBy('id_mhs');
-            })
+            // ->whereBetween('IRS.smst_aktif', [1, 14])
+            // ->whereIn('IRS.id_irs', function ($query) {
+            //     $query->select(DB::raw('MAX(id_irs) as id_irs'))
+            //         ->from('IRS')
+            //         ->groupBy('id_mhs');
+            // })
             ->count();
 
         $jmlSemStatus = [];
@@ -632,21 +632,31 @@ class DosenController extends Controller
         }
     }
 
-    public function verifikasiSkripsi($NIM) {
-        $mahasiswa = Mahasiswa::find($NIM);
+    public function verifikasiSkripsi(Request $request, $NIM) {
+        $mahasiswa = Mahasiswa::where('NIM', $NIM)->first();
 
         if (!$mahasiswa) {
             return redirect()->back()->with('error', 'Mahasiswa tidak ditemukan.');
         }
 
-        $Skripsi = Skripsi::where('NIM', $mahasiswa->NIM)->first();
+        $Skripsi = Skripsi::where('NIM', $mahasiswa->NIM)->latest('id_skripsi')->first();
+
 
         if (!$Skripsi) {
             return redirect()->back()->with('error', 'Skripsi tidak ditemukan.');
         }
-
-        $Skripsi->persetujuan = 'Disetujui';
-        $Skripsi->save();
+        
+        $persetujuan_skripsi = $request->input('persetujuan_skripsi');
+        if ($persetujuan_skripsi === 'tidak_setuju') {
+            // Jika yang dipilih adalah "Tidak Setuju," maka hapus data PKL terbaru
+            $Skripsi->delete();
+            return redirect()->back()->with('error', 'PKL tidak disetujui dan telah dihapus.');
+        } else {
+            // Jika yang dipilih adalah "Setuju," maka setujui PKL
+            $Skripsi->persetujuan = 'Disetujui';
+            $Skripsi->save();
+            return redirect()->back()->with('success', 'Verifikasi PKL berhasil dilakukan.');
+        }
 
         return redirect()->back()->with('success', 'Verifikasi Skripsi berhasil dilakukan.');
     }
@@ -741,6 +751,8 @@ class DosenController extends Controller
             ->select('angkatan')
             ->distinct()
             ->pluck('angkatan')
+            ->sort()
+            ->values()
             ->toArray();
 
         $jumlahAngkatan = count($tahun);
@@ -894,6 +906,8 @@ class DosenController extends Controller
         ->select('angkatan')
         ->distinct()
         ->pluck('angkatan')
+        ->sort()
+        ->values()
         ->toArray();
 
         $jumlahAngkatan = count($tahun);
@@ -1044,6 +1058,8 @@ class DosenController extends Controller
             ->select('angkatan')
             ->distinct()
             ->pluck('angkatan')
+            ->sort()
+            ->values()
             ->toArray();
     
         $jumlahAngkatan = count($tahun);
