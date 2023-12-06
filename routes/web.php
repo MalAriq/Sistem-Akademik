@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/operator/export', [OperatorController::class, 'export'])->name('operator.export');
         Route::post('/operator/import', [OperatorController::class, 'import'])->name('operator.import');
         Route::get('/operator/edit/{NIM}', [OperatorController::class, 'edit'])->name('operator.edit');
+        Route::delete('/operator/mahasiswa/{NIM}', [OperatorController::class, 'delete'])->name('operator.delete');
         Route::put('/operator/update/{NIM}', [OperatorController::class, 'update'])->name('operator.update');
         Route::get('/operator/rekap-pkl', [OperatorController::class, 'rekappkl'])->name('operator.rekappkl');
         Route::get('/operator/sudah-pkl/{tahun}', [OperatorController::class, 'dataSudahPKL'])->name('operator.sudahpkl');

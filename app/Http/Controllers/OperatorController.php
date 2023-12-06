@@ -255,6 +255,20 @@ class OperatorController extends Controller
         return view('operator.edit', compact('operator', 'mahasiswa', 'kota'));
     }
 
+    public function delete($NIM)
+    {
+        $mahasiswa = Mahasiswa::where('NIM', $NIM)->first();
+
+        if (!$mahasiswa) {
+            return redirect()->route('operator.manajemen')->with('error', 'Mahasiswa tidak ditemukan');
+        }
+
+        // Hapus mahasiswa
+        $mahasiswa->delete();
+
+        return redirect()->route('operator.manajemen')->with('success', 'Mahasiswa berhasil dihapus');
+    }
+
     public function update($NIM, Request $request)
     {
         $mahasiswa = Mahasiswa::where('NIM', $NIM)->first();

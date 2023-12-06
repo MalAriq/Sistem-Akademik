@@ -8,13 +8,6 @@
                 <p class="text-3xl font-bold text-gray-900 dark:text-white uppercase">Data Rekap Status Mahasiswa</p>
             </div>
             <div>
-                <form action="{{ route('operator.rekapstatus') }}" method="GET">
-                    <label for="start_year">Start Year:</label>
-                    <input type="number" name="start_year" value="{{ $startYear ?? '' }}">
-                    <label for="end_year">End Year:</label>
-                    <input type="number" name="end_year" value="{{ $endYear ?? '' }}">
-                    <button type="submit">Filter</button>
-                </form>
                 <a href="{{ route('operator.cetakrekapstatus') }}" class="text-white bg-blue-500 hover:bg-blue-600 font-medium text-base text-center py-2 px-4 rounded-full" target="_blank">Cetak File</a>
                 <table class="border-collapse w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-5">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

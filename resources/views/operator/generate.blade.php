@@ -9,14 +9,14 @@
            <p class="text-3xl font-bold text-gray-900 light:text-white uppercase">Generate Akun</p>
         </div>
 
-        <div class="container flowbite mx-auto bg-white shadow-lg rounded-lg">
+        <div class="">
             <div class="card mt-3 mb-3">
                 <form action="{{ route('operator.import') }}" method="POST" enctype="multipart/form-data" class="mb-4">
                     @csrf
                     <input type="file" name="file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mt-2">
                     <button class="btn btn-primary mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Import User Data</button>
                 </form>
-                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <div class="relative overflow-x-auto sm:rounded-lg">
                     <table border="1" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class=" text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 text-center">
                             <tr>
