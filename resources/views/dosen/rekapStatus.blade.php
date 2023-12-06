@@ -17,8 +17,11 @@
                         </th>
                         </tr>
                         <tr class="text-center">
+                            <th scope="col" class="px-6 py-5 text-lg">
+                                Status
+                            </th>
                             @foreach($tahun as $tahunItem)
-                                <th scope="col" class="px-6 py-5 text-lg" colspan="2">
+                                <th scope="col" class="px-6 py-5 text-lg">
                                     {{ $tahunItem }}
                                 </th>
                             @endforeach
