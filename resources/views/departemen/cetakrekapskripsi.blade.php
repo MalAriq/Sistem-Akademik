@@ -43,7 +43,7 @@
         <h4>UNIVERSITAS DIPONEGORO</h4>
     </div>
     <div class="header">
-        <h5 class="mt-4 font-bold">Rekap Data Skripsi Informatika Undip</h5>
+        <h5 class="mt-4 font-bold uppercase">Rekap Data Skripsi Informatika Undip</h5>
     </div>
 	<table class="mt-4">
 		<thead>

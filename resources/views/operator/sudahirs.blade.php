@@ -6,7 +6,7 @@
        <div class="grid grid-cols-1 gap-4 mb-4">
 
          <div class="flex items-center justify-center h-20 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-           <p class="text-3xl font-bold text-gray-900 dark:text-white">Data Sudah IRS Mahasiswa</p>
+           <p class="text-3xl font-bold text-gray-900 dark:text-white uppercase">Data Sudah IRS Mahasiswa</p>
         </div>
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">

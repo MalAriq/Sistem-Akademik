@@ -4,7 +4,7 @@
 <div class="p-1 sm:ml-64">
     <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
      <div class="flex items-center justify-center h-20 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-        <p class="text-3xl font-bold text-gray-900 dark:text-white">Persetujuan KHS Mahasiswa Perwalian</p>
+        <p class="text-3xl font-bold text-gray-900 dark:text-white uppercase">Persetujuan KHS Mahasiswa Perwalian</p>
      </div>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table border="1" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">

@@ -5,7 +5,7 @@
     <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
        <div class="grid grid-cols-1 gap-4 mb-4">
          <div class="flex items-center justify-center h-20 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-           <p class="text-3xl font-bold text-gray-900 dark:text-white">Data Sudah PKL Mahasiswa Angkatan {{$tahun}}</p>
+           <p class="text-3xl font-bold text-gray-900 dark:text-white uppercase">Data Sudah PKL Mahasiswa Angkatan {{$tahun}}</p>
         </div>
         <div>
             <a href="{{ route('operator.cetaksudahpkl', ['tahun' => $tahun]) }}" class="text-white bg-blue-500 hover:bg-blue-600 font-medium text-base text-center py-2 px-4 rounded-full" target="_blank">Cetak Sudah PKL</a>

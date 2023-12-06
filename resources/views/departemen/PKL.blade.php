@@ -6,7 +6,7 @@
        <div class="grid grid-cols-1 gap-4 mb-4">
 
          <div class="flex items-center justify-center h-20 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-           <p class="text-3xl font-bold text-gray-900 dark:text-white">Data PKL Mahasiswa</p>
+           <p class="text-3xl font-bold text-gray-900 dark:text-white uppercase">Data PKL Mahasiswa</p>
         </div>
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">

@@ -4,7 +4,7 @@
 <div class="p-1 sm:ml-64">
     <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
         <div class="flex items-center justify-center h-20 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-        <p class="text-3xl font-bold text-gray-900 dark:text-white">Daftar Mahasiswa Perwalian</p>
+        <p class="text-3xl font-bold text-gray-900 dark:text-white uppercase">Daftar Mahasiswa Perwalian</p>
         </div>
         <form action="{{ route('dosen.daftarmahasiswa') }}" method="GET" class="mb-4">
             <input type="text" name="search" placeholder="Search by Nama, NIM, Angkatan, Status, Alamat, Jalur Masuk, or Nama Kota" class="p-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600">

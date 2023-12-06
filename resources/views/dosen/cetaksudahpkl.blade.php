@@ -43,7 +43,7 @@
         <h4>UNIVERSITAS DIPONEGORO</h4>
     </div>
     <div class="header">
-        <h5 class="mt-16 font-bold">Data Mahasiswa Sudah PKL Informatika Undip Angkatan {{$tahun}}</h5>
+        <h5 class="mt-16 font-bold uppercase">Data Mahasiswa Sudah PKL Informatika Undip Angkatan {{$tahun}}</h5>
     </div> 
     <table style="width: 60%;">
 		<tr>

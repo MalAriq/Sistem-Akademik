@@ -1036,8 +1036,6 @@ class DosenController extends Controller
             ->select('Dosen.*')
             ->first();
 
-        $statusTidakAktif = ['TIDAK AKTIF', 'CUTI', 'MANGKIR', 'DO', 'UNDUR DIRI', 'LULUS', 'MENINGGAL DUNIA'];
-
         $tahun = DB::table('Mahasiswa')
         ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
         ->where('Dosen.NIP', $nip) 
@@ -1142,7 +1140,7 @@ class DosenController extends Controller
         return view('dosen.mhsaktif', compact('doswal', 'aktif', 'tahun', 'doswal'));
     }
 
-    public function dataMhsTdkAktif($tahun)
+    public function dataMhsTdkAktif($tahun, $status)
     {
         $user = auth()->user();
         $nip = Dosen::where('email', $user->email)->value('NIP');
@@ -1151,17 +1149,16 @@ class DosenController extends Controller
         ->select('Dosen.*')
         ->first();
 
-        $statusTidakAktif = ['TIDAK AKTIF', 'CUTI', 'MANGKIR', 'DO', 'UNDUR DIRI', 'LULUS', 'MENINGGAL DUNIA'];
 
         $tdkAktif = DB::table('Mahasiswa')
         ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
         ->where('Dosen.NIP', $nip)
         ->where('Mahasiswa.angkatan', $tahun)
-        ->whereIn('Mahasiswa.status', $statusTidakAktif)
+        ->where('Mahasiswa.status', $status)
         ->select('Mahasiswa.*')
         ->get();
 
-        return view('dosen.mhstdkaktif', compact('doswal', 'tdkAktif', 'tahun', 'doswal'));
+        return view('dosen.mhstdkaktif', compact('doswal', 'tdkAktif', 'tahun', 'doswal', 'status'));
     }
 
     public function cetakStatus()
@@ -1206,7 +1203,7 @@ class DosenController extends Controller
          return $pdf->stream('mahasiswa-aktif-' . $tahun . '.pdf');
     }
 
-    public function cetakMhsTdkAktif($tahun)
+    public function cetakMhsTdkAktif($tahun, $status)
     {
         $user = auth()->user();
         $nip = Dosen::where('email', $user->email)->value('NIP');
@@ -1215,19 +1212,17 @@ class DosenController extends Controller
             ->select('Dosen.*')
             ->first();
 
-         $statusTidakAktif = ['TIDAK AKTIF', 'CUTI', 'MANGKIR', 'DO', 'UNDUR DIRI', 'LULUS', 'MENINGGAL DUNIA'];
-
          $tdkAktif = DB::table('Mahasiswa')
             ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
             ->where('Mahasiswa.angkatan', $tahun)
             ->where('Dosen.NIP', $nip)
-            ->whereIn('Mahasiswa.status', $statusTidakAktif)
+            ->where('Mahasiswa.status', $status)
             ->select('Mahasiswa.*')
             ->get();
 
-         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('dosen.cetakMhsTdkAktif', ['tdkAktif' => $tdkAktif, 'tahun' => $tahun, 'doswal' => $doswal]);
+         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('dosen.cetakMhsTdkAktif', ['tdkAktif' => $tdkAktif, 'tahun' => $tahun, 'doswal' => $doswal, 'status' => $status]);
 
-         return $pdf->stream('mahasiswa-tidak-aktif-' . $tahun . '.pdf');
+         return $pdf->stream('mahasiswa-tidak-aktif-' . $tahun . '-' .$status. '.pdf');
     }
 
     public function editIRS(Request $request, $NIM) {

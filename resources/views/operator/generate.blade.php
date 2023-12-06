@@ -6,7 +6,7 @@
        <div class="grid grid-cols-1 gap-4 mb-4">
 
          <div class="flex items-center justify-center h-20 mb-4 rounded bg-gray-50 light:bg-gray-800">
-           <p class="text-3xl font-bold text-gray-900 light:text-white">Generate Akun</p>
+           <p class="text-3xl font-bold text-gray-900 light:text-white uppercase">Generate Akun</p>
         </div>
 
         <div class="container flowbite mx-auto bg-white shadow-lg rounded-lg">

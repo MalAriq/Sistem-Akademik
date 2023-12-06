@@ -4,7 +4,7 @@
 <div class="p-1 sm:ml-64">
    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
     <div class="flex items-center justify-center h-20 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-       <p class="text-3xl font-bold text-gray-900 dark:text-white">Dashboard Departemen</p>
+       <p class="text-3xl font-bold text-gray-900 dark:text-white uppercase">Dashboard Departemen</p>
 
       </div>
       <div class="grid grid-cols-3 gap-4 mb-4">
@@ -140,28 +140,28 @@
               </tr>
           </table>
         </div>
-    </div>
-    <div class="flex items-center justify-center rounded bg-gray-50 h-72 dark:bg-gray-800 relative col-span-2 row-span-4 mt-3">
-            <div class="flex flex-wrap items-center justify-center w-full">
-              @foreach ($jumlahStatus as $status => $count)
-                  <div class="status-box-container mb-3 md:mb-0 md:mr-2 flex">
-                      <div class="status-box p-4 text-white rounded-md w-60 h-24 mb-4 mr-8" style="background-color:
-                          @if($status === 'AKTIF') blue
-                          @elseif($status === 'TIDAK AKTIF') purple
-                          @elseif($status === 'CUTI') grey
-                          @elseif($status === 'MANGKIR') orange
-                          @elseif($status === 'DO') red
-                          @elseif($status === 'UNDUR DIRI') pink
-                          @elseif($status === 'LULUS') green
-                          @elseif($status === 'MENINGGAL DUNIA') black
-                          @else grey
-                          @endif">
-                          <p class="text-lg font-bold flex items-center justify-center">{{ $status }}</p>
-                          <p class="text-2xl font-bold text-center flex item-center justify-center">{{ $count }}</p>
+        <div class="flex items-center justify-center rounded bg-gray-50 h-72 dark:bg-gray-800 relative col-span-2 row-span-4 mt-3">
+                <div class="flex flex-wrap items-center justify-center w-full">
+                  @foreach ($jumlahStatus as $status => $count)
+                      <div class="status-box-container mb-3 md:mb-0 md:mr-2 flex">
+                          <div class="status-box p-4 text-white rounded-md w-60 h-24 mb-4 mr-8" style="background-color:
+                              @if($status === 'AKTIF') blue
+                              @elseif($status === 'TIDAK AKTIF') purple
+                              @elseif($status === 'CUTI') grey
+                              @elseif($status === 'MANGKIR') orange
+                              @elseif($status === 'DO') red
+                              @elseif($status === 'UNDUR DIRI') pink
+                              @elseif($status === 'LULUS') green
+                              @elseif($status === 'MENINGGAL DUNIA') black
+                              @else grey
+                              @endif">
+                              <p class="text-lg font-bold flex items-center justify-center">{{ $status }}</p>
+                              <p class="text-2xl font-bold text-center flex item-center justify-center">{{ $count }}</p>
+                          </div>
                       </div>
-                  </div>
-              @endforeach
-            </div>
-          </div>
+                  @endforeach
+                </div>
+              </div>
+    </div>
 </div>
 @endsection

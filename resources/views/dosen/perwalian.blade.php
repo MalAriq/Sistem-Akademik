@@ -19,7 +19,7 @@
         @endif
         <br>
         <h1
-            class="text-l mb-5 font-semibold leading-tight tracking-tight text-gray-900 md:text-xl dark:text-white">
+            class="text-l mb-5 font-semibold leading-tight tracking-tight text-gray-900 md:text-xl dark:text-white uppercase">
             Informasi Akademik Mahasiswa
         </h1>
         <form class="space-y-4 md:space-y-6" method="GET" autocomplete="on" action="" >
