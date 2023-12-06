@@ -8,7 +8,7 @@
            <p class="text-3xl font-bold text-gray-900 dark:text-white">Data Belum PKL Mahasiswa Angkatan {{$tahun}}</p>
         </div>
         <div>
-            <a href="{{ route('dosen.cetakbelumpkl', ['tahun' => $tahun]) }}" class="text-white bg-blue-500 hover:bg-blue-600 font-medium text-base text-center py-2 px-4 rounded-full" target="_blank">Cetak Belum PKL</a>
+            <a href="{{ route('dosen.cetakbelumpkl', ['tahun' => $tahun]) }}" class="text-white bg-blue-500 hover:bg-blue-600 font-medium text-base text-center py-2 px-4 rounded-full" target="_blank">Cetak File</a>
             <table class="mt-5 w-full text-sm text-left text-gray-500 dark:text-gray-400">
                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 text-center">
                    <tr>
