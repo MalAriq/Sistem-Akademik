@@ -1,8 +1,11 @@
 @extends('dosen.layouts.main')
 
 @section('content')
-<div class="p-4 sm:ml-64">
-    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+<div class="p-1 sm:ml-64">
+    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-8">
+        <div class="flex items-center justify-center h-20 mb-4 rounded bg-gray-50 dark:bg-gray-800">
+            <p class="text-3xl font-bold text-gray-900 dark:text-white uppercase">Informasi Akademik Mahasiswa</p>
+            </div>
 
         @if (session('success'))
             <div class="p-4 mr-2 text-sm text-green-800 rounded-lg bg-green-100 dark:bg-gray-800 dark:text-green-400"
@@ -18,10 +21,7 @@
             </div>
         @endif
         <br>
-        <h1
-            class="text-l mb-5 font-semibold leading-tight tracking-tight text-gray-900 md:text-xl dark:text-white uppercase">
-            Informasi Akademik Mahasiswa
-        </h1>
+        
         <form class="space-y-4 md:space-y-6" method="GET" autocomplete="on" action="" >
         <div class="flex flex-col items-center mb-6">
             <div class="w-50 h-50 squared-full border border-gray-800">
