@@ -1,20 +1,13 @@
 @extends('departemen.layouts.main')
 
 @section('content')
-<div class="p-4 sm:ml-64">
-    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+<div class="p-1 sm:ml-64">
+    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-8">
         <div class="grid grid-cols-1 gap-4 mb-4">
             <div class="flex items-center justify-center h-20 mb-4 rounded bg-gray-50 dark:bg-gray-800">
                 <p class="text-3xl font-bold text-gray-900 dark:text-white uppercase">Data Rekap Status Mahasiswa</p>
             </div>
             <div>
-                <form action="{{ route('departemen.rekapstatus') }}" method="GET">
-                    <label for="start_year">Start Year:</label>
-                    <input type="number" name="start_year" value="{{ $startYear ?? '' }}">
-                    <label for="end_year">End Year:</label>
-                    <input type="number" name="end_year" value="{{ $endYear ?? '' }}">
-                    <button type="submit">Filter</button>
-                </form>
                 <a href="{{ route('departemen.cetakrekapstatus') }}" class="text-white bg-blue-500 hover:bg-blue-600 font-medium text-base text-center py-2 px-4 rounded-full" target="_blank">Cetak File</a>
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-5">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
