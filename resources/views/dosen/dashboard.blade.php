@@ -167,7 +167,7 @@
 
 
 
-            <div class="grid grid-cols-3 gap-4 mb-4 mt-4">
+            {{-- <div class="grid grid-cols-3 gap-4 mb-4 mt-4">
             @for ($semester = 1; $semester <= 14; $semester++)
               <div class="flex items-center justify-center rounded bg-{{ $semester <= 8 ? 'green' : ($semester <= 12 ? 'yellow' : 'red') }}-400 h-80 dark:bg-gray-800 relative">
                   <div class="text-xl font-semibold text-center absolute top-2 left-0 right-0 mt-0">SEMESTER {{ $semester }}</div>
@@ -227,5 +227,5 @@
               @endfor
 
       </div>
-  </div>
+  </div> --}}
 @endsection
