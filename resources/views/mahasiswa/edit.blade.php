@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="p-1 sm:ml-64">
-   <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+   <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-8">
         <div class="flex items-center justify-center h-20 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-            <p class="text-3xl font-bold text-gray-900 dark:text-white">Update Data Mahasiswa</p>
+            <p class="uppercase text-3xl font-bold text-gray-900 dark:text-white">Update Data Mahasiswa</p>
         </div>
         <form method="POST" action="{{ route('mahasiswa.update', $mahasiswa->id_mhs) }}" enctype="multipart/form-data" class="p-3">
             @csrf
@@ -84,6 +84,7 @@
                     </select>
                 </div>
             </div>
+            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update</button>
 
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script>
@@ -118,7 +119,6 @@
             </script>
 
             </div>
-            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update</button>
         </form>
    </div>
 </div>

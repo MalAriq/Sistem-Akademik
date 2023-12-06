@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="p-1 sm:ml-64">
-    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-8">
         <div class="flex items-center justify-center h-20 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-            <p class="text-3xl font-bold text-gray-900 dark:text-white">Entry Data Skripsi</p>
+            <p class="uppercase text-3xl font-bold text-gray-900 dark:text-white">Entry Data Skripsi</p>
         </div>
         @if ($skripsiExist)
             <!-- Tampilkan formulir ketika id_mhs sudah ada di tabel IRS -->
