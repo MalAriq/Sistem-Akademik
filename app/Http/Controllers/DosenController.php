@@ -746,7 +746,7 @@ class DosenController extends Controller
         $jumlahAngkatan = count($tahun);
 
         $jumlahMahasiswaPKL = [];
-        $jumlahMahasiswaBLMPKL = [];
+        $jumlahMahasiswaBlmPKL = [];
 
         foreach ($tahun as $year) {
             $jumlahMahasiswaPKL[$year] = PKL::join('Mahasiswa', 'PKL.id_mhs', '=', 'Mahasiswa.id_mhs')
@@ -1031,7 +1031,7 @@ class DosenController extends Controller
     {
         $user = auth()->user();
         $nip = Dosen::where('email', $user->email)->value('NIP');
-    
+
         $doswal = Dosen::where('Dosen.email', $user->email)
             ->select('Dosen.*')
             ->first();
@@ -1045,9 +1045,9 @@ class DosenController extends Controller
             ->distinct()
             ->pluck('angkatan')
             ->toArray();
-    
+
         $jumlahAngkatan = count($tahun);
-    
+
         $jumlahMahasiswaAktif = [];
         $jumlahMahasiswaTidakAktif = [];
         $jumlahMahasiswaCuti = [];
@@ -1056,8 +1056,8 @@ class DosenController extends Controller
         $jumlahMahasiswaLulus = [];
         $jumlahMahasiswaUD = [];
         $jumlahMahasiswaMD = [];
-    
-        foreach ($tahun as $year) {    
+
+        foreach ($tahun as $year) {
             $jumlahMahasiswaAktif[$year] = DB::table('Mahasiswa')
                 ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
                 ->where('Dosen.NIP', $nip)
@@ -1068,42 +1068,42 @@ class DosenController extends Controller
 
             $jumlahMahasiswaCuti[$year] = DB::table('Mahasiswa')
                 ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-                ->where('Dosen.NIP', $nip) 
+                ->where('Dosen.NIP', $nip)
                 ->where('Mahasiswa.angkatan', $year)
                 ->where('Mahasiswa.status', 'CUTI')
                 ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
                 ->count();
             $jumlahMahasiswaMangkir[$year] = DB::table('Mahasiswa')
                 ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-                ->where('Dosen.NIP', $nip) 
+                ->where('Dosen.NIP', $nip)
                 ->where('Mahasiswa.angkatan', $year)
                 ->where('Mahasiswa.status', 'MANGKIR')
                 ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
                 ->count();
             $jumlahMahasiswaDO[$year] = DB::table('Mahasiswa')
                 ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-                ->where('Dosen.NIP', $nip) 
+                ->where('Dosen.NIP', $nip)
                 ->where('Mahasiswa.angkatan', $year)
                 ->where('Mahasiswa.status', 'DO')
                 ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
                 ->count();
             $jumlahMahasiswaUD[$year] = DB::table('Mahasiswa')
                 ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-                ->where('Dosen.NIP', $nip) 
+                ->where('Dosen.NIP', $nip)
                 ->where('Mahasiswa.angkatan', $year)
                 ->where('Mahasiswa.status', 'UNDUR DIRI')
                 ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
                 ->count();
             $jumlahMahasiswaLulus[$year] = DB::table('Mahasiswa')
                 ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-                ->where('Dosen.NIP', $nip) 
+                ->where('Dosen.NIP', $nip)
                 ->where('Mahasiswa.angkatan', $year)
                 ->where('Mahasiswa.status', 'LULUS')
                 ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
                 ->count();
             $jumlahMahasiswaMD[$year] = DB::table('Mahasiswa')
                 ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
-                ->where('Dosen.NIP', $nip) 
+                ->where('Dosen.NIP', $nip)
                 ->where('Mahasiswa.angkatan', $year)
                 ->where('Mahasiswa.status', 'MENINGGAL DUNIA')
                 ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
@@ -1112,7 +1112,7 @@ class DosenController extends Controller
             }
             return view('dosen.rekapstatus', compact('doswal', 'jumlahMahasiswaAktif', 'jumlahMahasiswaTidakAktif', 'jumlahMahasiswaCuti', 'jumlahMahasiswaMangkir', 'jumlahMahasiswaDO', 'jumlahMahasiswaUD', 'jumlahMahasiswaLulus', 'jumlahMahasiswaMD', 'tahun', 'jumlahAngkatan'));
     }
-    
+
 
     public function dataMhsAktif($tahun)
     {
