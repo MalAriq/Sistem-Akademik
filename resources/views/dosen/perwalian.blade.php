@@ -25,7 +25,7 @@
         <form class="space-y-4 md:space-y-6" method="GET" autocomplete="on" action="" >
         <div class="flex flex-col items-center mb-6">
             <div class="">
-                <img src="{{ asset('fotoProfil/'.$mahasiswa->foto) }}" alt="user photo" class="mx-auto w-48 h-48 rounded-full border-gray-800" />
+                <img src="{{ asset('fotoProfil/'.$mahasiswa->foto) }}" alt="user photo" class="mx-auto w-48 h-48 rounded-full border-gray-800 border" />
             </div>
         </div>
         <div class="form-group">
