@@ -8,7 +8,7 @@
             <p class="text-3xl font-bold text-gray-900 dark:text-white uppercase">Data Rekap PKL Mahasiswa</p>
             </div>
             <div>
-                <a href="{{ route('operator.cetakrekappkl') }}" class="text-white bg-blue-500 hover:bg-blue-600 font-medium text-base text-center py-2 px-4 rounded-full" target="_blank">Cetak Rekap</a>
+                <a href="{{ route('operator.cetakrekappkl') }}" class="text-white bg-blue-500 hover:bg-blue-600 font-medium text-base text-center py-2 px-4 rounded-full" target="_blank">Cetak File</a>
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-5">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr class="text-center">
