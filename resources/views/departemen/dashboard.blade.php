@@ -146,7 +146,6 @@
                       <div class="status-box-container mb-3 md:mb-0 md:mr-2 flex">
                           <div class="status-box p-4 text-white rounded-md w-60 h-24 mb-4 mr-8" style="background-color:
                               @if($status === 'AKTIF') blue
-                              @elseif($status === 'TIDAK AKTIF') purple
                               @elseif($status === 'CUTI') grey
                               @elseif($status === 'MANGKIR') orange
                               @elseif($status === 'DO') red

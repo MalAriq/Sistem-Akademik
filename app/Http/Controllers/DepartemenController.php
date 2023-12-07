@@ -116,7 +116,7 @@ class DepartemenController extends Controller
         ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
         ->count();
 
-        $statusTidakAktif = ['AKTIF', 'TIDAK AKTIF', 'CUTI', 'MANGKIR', 'DO', 'UNDUR DIRI', 'LULUS', 'MENINGGAL DUNIA'];
+        $statusTidakAktif = ['AKTIF', 'CUTI', 'MANGKIR', 'DO', 'UNDUR DIRI', 'LULUS', 'MENINGGAL DUNIA'];
 
         $cekStatusMahasiswa = DB::table('Mahasiswa')
         ->whereIn('Mahasiswa.status', $statusTidakAktif)
@@ -562,19 +562,19 @@ class DepartemenController extends Controller
     {
         $user = auth()->user();
         $nip = Departemen::where('email', $user->email)->value('NIP');
-    
+
         $dept = Departemen::where('Departemen.email', $user->email)
             ->select('Departemen.*')
             ->first();
-    
-    
+
+
         $tahun = DB::table('Mahasiswa')
             ->select('angkatan')
             ->distinct()
             ->orderBy('angkatan', 'asc')
             ->pluck('angkatan')
             ->toArray();
-    
+
         $jumlahAngkatan = count($tahun);
 
         $jumlahMahasiswaAktif = [];
@@ -585,8 +585,8 @@ class DepartemenController extends Controller
         $jumlahMahasiswaLulus= [];
         $jumlahMahasiswaUD = [];
         $jumlahMahasiswaMD= [];
-        
-    
+
+
         foreach ($tahun as $year) {
             $jumlahMahasiswaAktif[$year] = DB::table('Mahasiswa')
             ->where('Mahasiswa.angkatan', $year)
@@ -631,11 +631,11 @@ class DepartemenController extends Controller
                 ->select(DB::raw('COUNT(DISTINCT Mahasiswa.id_mhs) as jumlah'))
                 ->count();
         }
-    
+
         return view('departemen.rekapstatus', compact('dept', 'jumlahMahasiswaAktif', 'jumlahMahasiswaTidakAktif', 'jumlahMahasiswaCuti', 'jumlahMahasiswaMangkir', 'jumlahMahasiswaDO', 'jumlahMahasiswaUD', 'jumlahMahasiswaLulus', 'jumlahMahasiswaMD', 'tahun', 'jumlahAngkatan'));
     }
 
-    
+
     public function dataMhsAktif($tahun)
     {
         $user = auth()->user();
@@ -654,7 +654,7 @@ class DepartemenController extends Controller
         ->where('Mahasiswa.status', 'AKTIF')
         ->select('Mahasiswa.*')
         ->get();
-    
+
         return view('departemen.mhsaktif', compact('dept', 'aktif', 'tahun', 'doswal'));
     }
 
@@ -675,21 +675,21 @@ class DepartemenController extends Controller
 
         $tdkAktif = DB::table('Mahasiswa')
             ->where('Mahasiswa.angkatan', $tahun)
-            ->where('Mahasiswa.status', $status) 
+            ->where('Mahasiswa.status', $status)
             ->select('Mahasiswa.*')
             ->get();
-    
+
         return view('departemen.mhstdkaktif', compact('dept', 'tdkAktif', 'tahun', 'doswal', 'status'));
     }
 
     public function cetakStatus()
-    {    
+    {
         $status = DB::table('Mahasiswa')
             ->select('Mahasiswa.*')
             ->get();
-    
+
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('departemen.cetakrekapstatus', ['status' => $status]);
-    
+
         return $pdf->stream('rekap-status.pdf');
     }
 
@@ -704,26 +704,26 @@ class DepartemenController extends Controller
             ->where('Mahasiswa.status', 'AKTIF')
             ->select('Mahasiswa.*')
             ->get();
-    
+
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('departemen.cetakMhsAktif', ['aktif' => $aktif, 'tahun' => $tahun, 'doswal' => $doswal]);
-    
+
         return $pdf->stream('mahasiswa-aktif-' . $tahun . '.pdf');
     }
-    
+
     public function cetakMhsTdkAktif($tahun, $status)
     {
         $doswal = Dosen::join('Mahasiswa', 'Dosen.nama_doswal', '=', 'Mahasiswa.nama_doswal')
             ->where('Mahasiswa.angkatan', $tahun)
             ->first();
-    
+
         $tdkAktif = DB::table('Mahasiswa')
             ->where('Mahasiswa.angkatan', $tahun)
             ->where('Mahasiswa.status', $status)
             ->select('Mahasiswa.*')
             ->get();
-    
+
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('departemen.cetakMhsTdkAktif', ['tdkAktif' => $tdkAktif, 'tahun' => $tahun, 'doswal' => $doswal, 'status' => $status]);
-    
+
         return $pdf->stream('mahasiswa-tidak-aktif-' . $tahun . '-' . $status . '.pdf');
     }
 

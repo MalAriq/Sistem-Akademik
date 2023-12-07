@@ -49,7 +49,7 @@ class DosenController extends Controller
                 ->groupBy('id_mhs');
         })
         ->count();
-    
+
 
         // Jumlah Mahasiswa dengan IRS Belum Terisi
         $jumlahMahasiswaBlmIRS = DB::table('Mahasiswa')
@@ -323,7 +323,7 @@ class DosenController extends Controller
             $jmlSemSkripsi[$semester]['mahasiswaSkripsi'] = count($mahasiswaSkripsi);
             $jmlSemSkripsi[$semester]['mahasiswaBelumSkripsi'] = count($mahasiswaBelumSkripsi);
 
-            $statusTidakAktif = ['AKTIF', 'TIDAK AKTIF', 'CUTI', 'MANGKIR', 'DO', 'UNDUR DIRI', 'LULUS', 'MENINGGAL DUNIA'];
+            $statusTidakAktif = ['AKTIF', 'CUTI', 'MANGKIR', 'DO', 'UNDUR DIRI', 'LULUS', 'MENINGGAL DUNIA'];
 
             $cekStatusMahasiswa = DB::table('Mahasiswa')
             ->leftJoin('Dosen', 'Mahasiswa.nama_doswal', '=', 'Dosen.nama_doswal')
@@ -645,7 +645,7 @@ class DosenController extends Controller
         if (!$Skripsi) {
             return redirect()->back()->with('error', 'Skripsi tidak ditemukan.');
         }
-        
+
         $persetujuan_skripsi = $request->input('persetujuan_skripsi');
         if ($persetujuan_skripsi === 'tidak_setuju') {
             // Jika yang dipilih adalah "Tidak Setuju," maka hapus data PKL terbaru
