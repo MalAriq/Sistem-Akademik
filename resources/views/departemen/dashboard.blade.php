@@ -11,7 +11,7 @@
          <div class="flex items-center justify-center h-72 rounded bg-gray-50 dark:bg-gray-800">
          <p class="text-xl font-semibold text-gray-900 dark:text-white">
          <div class="text-gray-900 dark:text-white text-center">
-         <img class="mx-auto rounded-full w-25 h-25 mb-3" src="{{ asset('fotoProfil/'.$dept->foto) }}" alt="Foto Pengguna">
+         <img class="mx-auto w-32 h-32 rounded-full border border-gray-800" src="{{ asset('fotoProfil/'.$dept->foto) }}" alt="Foto Pengguna">
          <div class="text-xl font-semibold">{{$dept->nama}}</div>
             <p class="text-l font-semibold">{{$dept->NIP}}</p>
             <p class="text-s">{{$dept->email}}</p>

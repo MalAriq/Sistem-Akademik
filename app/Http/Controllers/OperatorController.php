@@ -153,7 +153,7 @@ class OperatorController extends Controller
         ->first();
 
         $mahasiswa = Mahasiswa::select('NIM', 'Nama')
-        ->get();
+        ->paginate(15);
 
         return view('operator.manajemen', compact('operator', 'mahasiswa'));
 
@@ -167,7 +167,7 @@ class OperatorController extends Controller
         ->select('operator.*')
         ->first();
 
-        $users = User::get();
+        $users = User::paginate(10);
 
         return view('operator.generate', compact('users','operator'));
     }

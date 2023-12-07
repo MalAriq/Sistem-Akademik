@@ -37,6 +37,9 @@
                     </table>
                 </div>
             </div>
+            <div class="flex items-center justify-start p-2 mx-3 mt-4">
+                {{ $users->links() }}
+            </div>
         </div>
     </div>
 @endsection

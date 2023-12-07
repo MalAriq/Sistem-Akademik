@@ -39,10 +39,8 @@
             </table>
         </div>
     </div>
-    <div class="flex items-center justify-center rounded bg-gray-50 h-48 dark:bg-gray-800 relative col-span-2 row-span-4 mt-3">
-        <table class="flex items-center justify-center">
-                
-        </table>
+    <div class="flex items-center justify-start p-2 mx-3 mt-4">
+        {{ $mahasiswa->links() }}
     </div>
 </div>
 @endsection

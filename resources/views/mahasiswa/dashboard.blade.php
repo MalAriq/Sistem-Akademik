@@ -17,7 +17,7 @@
          <div class="flex items-center justify-center h-80 rounded bg-gray-50 dark:bg-gray-800">
          <p class="text-xl font-semibold text-gray-900 dark:text-white">
          <div class="text-gray-900 dark:text-white text-center">
-         <img class="mx-auto w-48 h-48 rounded-full border border-gray-800" src="{{ asset('fotoProfil/'.$mahasiswa->foto) }}" alt="Foto Pengguna">
+         <img class="mx-auto w-32 h-32 rounded-full border border-gray-800" src="{{ asset('fotoProfil/'.$mahasiswa->foto) }}" alt="Foto Pengguna">
          <div class="text-xl font-semibold">{{ $mahasiswa->nama }}</div>
             <p class="text-l font-semibold">{{$mahasiswa->NIM}}</p>
             <p class="text-s">{{$mahasiswa->email}}</p>

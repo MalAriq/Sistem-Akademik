@@ -688,7 +688,7 @@ class DosenController extends Controller
             });
         }
 
-        $mahasiswa = $query->get();
+        $mahasiswa = $query->paginate(15);
 
         return view('dosen.daftarmahasiswa', compact('mahasiswa', 'doswal'));
     }

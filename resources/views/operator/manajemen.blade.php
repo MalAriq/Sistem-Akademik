@@ -100,11 +100,10 @@
                </tbody>
            </table>
         </div>
-        @php
-           $mahasiswaCount = \App\Models\Mahasiswa::count();
-       @endphp
-           <p class="d-flex justify-content-end">Total Mahasiswa : {{$mahasiswaCount}}</p>
        </div>
+        <div class="flex items-center justify-start p-2 mx-3 mt-4">
+            {{ $mahasiswa->links() }}
+        </div>
     </div>
  </div>
 @endsection
